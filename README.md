@@ -1,5 +1,5 @@
 # hand-gesture-recognition-using-mediapipe
-#This repository serves as a modernized update to kinivi's hand-gesture-recognition-mediapipe project, refactored to work with modern libraries.
+# This repository serves as a modernized update to kinivi's hand-gesture-recognition-mediapipe project, refactored to work with modern libraries.
 You can go to the origin repo through this link: https://github.com/kinivi/hand-gesture-recognition-mediapipe
 # Demo
 Here's how to run the demo using your webcam.
