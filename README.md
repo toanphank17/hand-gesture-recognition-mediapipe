@@ -1,151 +1,51 @@
-# hand-gesture-recognition-using-mediapipe
-# This repository serves as a modernized update to kinivi's hand-gesture-recognition-mediapipe project, refactored to work with modern libraries.
-You can go to the origin repo through this link: https://github.com/kinivi/hand-gesture-recognition-mediapipe
-# Demo
-Here's how to run the demo using your webcam.
+Markdown# Hand Gesture Recognition Using MediaPipe
+
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi-OS_Bookworm-A22846?logo=raspberrypi&logoColor=white)](https://www.raspberrypi.com/)
+
+This repository serves as a modernized update to [kinivi's hand-gesture-recognition-mediapipe](https://github.com/kinivi/hand-gesture-recognition-mediapipe) project, refactored to work with modern libraries and fully optimized for single-board computers like the Raspberry Pi.
+
+---
+
+## 📋 Requirements & System Setup
+
+### 1. OS & Python Version
+* **Recommended OS:** Raspberry Pi OS (64-bit) Bookworm *(Available under the "Legacy" OS section in Raspberry Pi Imager)*.
+* **Python Version:** `Python 3.11.x` *(Both `3.11.15` or the default system version `3.11.2` work stably)*.
+
+### 2. System Dependencies
+Before installing Python packages, you must install the following system-level drivers for OpenCV and audio support via the terminal:
+
 ```bash
-python app.py
-```
-1. Thông tin hệ điều hành & Python (OS & Python Version)
-Hệ điều hành tối ưu: Raspberry Pi OS (64-bit) Bookworm (Dòng OS Legacy trong Raspberry Pi Imager).
-Phiên bản Python: Python 3.11.15 (Hoặc phiên bản Python 3.11.2 có sẵn của hệ điều hành đều hoạt động ổn định).
-2. Các thư viện hệ thống cần cài trước (System Dependencies)
-Trước khi cài đặt các thư viện Python, bạn cần chạy lệnh này trên terminal của Raspberry Pi để cài đặt các driver bổ trợ cho OpenCV và thư viện âm thanh:
-code
-Bash
-sudo apt update
-sudo apt install -y libgl1-mesa-glx libglib2.0-0 libportaudio2
-
-The following options can be specified when running the demo.
-* --device<br>Specifying the camera device number (Default：0)
-* --width<br>Width at the time of camera capture (Default：960)
-* --height<br>Height at the time of camera capture (Default：540)
-* --use_static_image_mode<br>Whether to use static_image_mode option for MediaPipe inference (Default：Unspecified)
-* --min_detection_confidence<br>
-Detection confidence threshold (Default：0.5)
-* --min_tracking_confidence<br>
-Tracking confidence threshold (Default：0.5)
-
-# Directory
-<pre>
-│  app.py
-│  keypoint_classification.ipynb
-│  point_history_classification.ipynb
-│  
-├─model
-│  ├─keypoint_classifier
-│  │  │  keypoint.csv
-│  │  │  keypoint_classifier.hdf5
-│  │  │  keypoint_classifier.py
-│  │  │  keypoint_classifier.tflite
-│  │  └─ keypoint_classifier_label.csv
-│  │          
-│  └─point_history_classifier
-│      │  point_history.csv
-│      │  point_history_classifier.hdf5
-│      │  point_history_classifier.py
-│      │  point_history_classifier.tflite
-│      └─ point_history_classifier_label.csv
-│          
-└─utils
-    └─cvfpscalc.py
-</pre>
-### app.py
-1. Thông tin hệ điều hành & Python (OS & Python Version)
-Hệ điều hành tối ưu: Raspberry Pi OS (64-bit) Bookworm (Dòng OS Legacy trong Raspberry Pi Imager).
-Phiên bản Python: Python 3.11.15 (Hoặc phiên bản Python 3.11.2 có sẵn của hệ điều hành đều hoạt động ổn định).
-2. Các thư viện hệ thống cần cài trước (System Dependencies)
-Trước khi cài đặt các thư viện Python, bạn cần chạy lệnh này trên terminal của Raspberry Pi để cài đặt các driver bổ trợ cho OpenCV và thư viện âm thanh:
-code
-Bash
-sudo apt update
-sudo apt install -y libgl1-mesa-glx libglib2.0-0 libportaudio2
-
-This is a sample program for inference.<br>
-In addition, learning data (key points) for hand sign recognition,<br>
-You can also collect training data (index finger coordinate history) for finger gesture recognition.
-
-### keypoint_classification.ipynb
-This is a model training script for hand sign recognition.
-
-### point_history_classification.ipynb
-This is a model training script for finger gesture recognition.
-
-### model/keypoint_classifier
-This directory stores files related to hand sign recognition.<br>
-The following files are stored.
-* Training data(keypoint.csv)
-* Trained model(keypoint_classifier.tflite)
-* Label data(keypoint_classifier_label.csv)
-* Inference module(keypoint_classifier.py)
-
-### model/point_history_classifier
-This directory stores files related to finger gesture recognition.<br>
-The following files are stored.
-* Training data(point_history.csv)
-* Trained model(point_history_classifier.tflite)
-* Label data(point_history_classifier_label.csv)
-* Inference module(point_history_classifier.py)
-
-### utils/cvfpscalc.py
-This is a module for FPS measurement.
-
-# Training
-Hand sign recognition and finger gesture recognition can add and change training data and retrain the model.
-
-### Hand sign recognition training
-#### 1.Learning data collection
-Press "k" to enter the mode to save key points（displayed as 「MODE:Logging Key Point」）<br>
-<img src="https://user-images.githubusercontent.com/37477845/102235423-aa6cb680-3f35-11eb-8ebd-5d823e211447.jpg" width="60%"><br><br>
-If you press "0" to "9", the key points will be added to "model/keypoint_classifier/keypoint.csv" as shown below.<br>
-1st column: Pressed number (used as class ID), 2nd and subsequent columns: Key point coordinates<br>
-<img src="https://user-images.githubusercontent.com/37477845/102345725-28d26280-3fe1-11eb-9eeb-8c938e3f625b.png" width="80%"><br><br>
-The key point coordinates are the ones that have undergone the following preprocessing up to ④.<br>
-<img src="https://user-images.githubusercontent.com/37477845/102242918-ed328c80-3f3d-11eb-907c-61ba05678d54.png" width="80%">
-<img src="https://user-images.githubusercontent.com/37477845/102244114-418a3c00-3f3f-11eb-8eef-f658e5aa2d0d.png" width="80%"><br><br>
-In the initial state, three types of learning data are included: open hand (class ID: 0), close hand (class ID: 1), and pointing (class ID: 2).<br>
-If necessary, add 3 or later, or delete the existing data of csv to prepare the training data.<br>
-<img src="https://user-images.githubusercontent.com/37477845/102348846-d0519400-3fe5-11eb-8789-2e7daec65751.jpg" width="25%">　<img src="https://user-images.githubusercontent.com/37477845/102348855-d2b3ee00-3fe5-11eb-9c6d-b8924092a6d8.jpg" width="25%">　<img src="https://user-images.githubusercontent.com/37477845/102348861-d3e51b00-3fe5-11eb-8b07-adc08a48a760.jpg" width="25%">
-
-#### 2.Model training
-Open "[keypoint_classification.ipynb](keypoint_classification.ipynb)" in Jupyter Notebook and execute from top to bottom.<br>
-To change the number of training data classes, change the value of "NUM_CLASSES = 3" <br>and modify the label of "model/keypoint_classifier/keypoint_classifier_label.csv" as appropriate.<br><br>
-
-#### X.Model structure
-The image of the model prepared in "[keypoint_classification.ipynb](keypoint_classification.ipynb)" is as follows.
-<img src="https://user-images.githubusercontent.com/37477845/102246723-69c76a00-3f42-11eb-8a4b-7c6b032b7e71.png" width="50%"><br><br>
-
-### Finger gesture recognition training
-#### 1.Learning data collection
-Press "h" to enter the mode to save the history of fingertip coordinates (displayed as "MODE:Logging Point History").<br>
-<img src="https://user-images.githubusercontent.com/37477845/102249074-4d78fc80-3f45-11eb-9c1b-3eb975798871.jpg" width="60%"><br><br>
-If you press "0" to "9", the key points will be added to "model/point_history_classifier/point_history.csv" as shown below.<br>
-1st column: Pressed number (used as class ID), 2nd and subsequent columns: Coordinate history<br>
-<img src="https://user-images.githubusercontent.com/37477845/102345850-54ede380-3fe1-11eb-8d04-88e351445898.png" width="80%"><br><br>
-The key point coordinates are the ones that have undergone the following preprocessing up to ④.<br>
-<img src="https://user-images.githubusercontent.com/37477845/102244148-49e27700-3f3f-11eb-82e2-fc7de42b30fc.png" width="80%"><br><br>
-In the initial state, 4 types of learning data are included: stationary (class ID: 0), clockwise (class ID: 1), counterclockwise (class ID: 2), and moving (class ID: 4). <br>
-If necessary, add 5 or later, or delete the existing data of csv to prepare the training data.<br>
-<img src="https://user-images.githubusercontent.com/37477845/102350939-02b0c080-3fe9-11eb-94d8-54a3decdeebc.jpg" width="20%">　<img src="https://user-images.githubusercontent.com/37477845/102350945-05131a80-3fe9-11eb-904c-a1ec573a5c7d.jpg" width="20%">　<img src="https://user-images.githubusercontent.com/37477845/102350951-06444780-3fe9-11eb-98cc-91e352edc23c.jpg" width="20%">　<img src="https://user-images.githubusercontent.com/37477845/102350942-047a8400-3fe9-11eb-9103-dbf383e67bf5.jpg" width="20%">
-
-#### 2.Model training
-Open "[point_history_classification.ipynb](point_history_classification.ipynb)" in Jupyter Notebook and execute from top to bottom.<br>
-To change the number of training data classes, change the value of "NUM_CLASSES = 4" and <br>modify the label of "model/point_history_classifier/point_history_classifier_label.csv" as appropriate. <br><br>
-
-#### X.Model structure
-The image of the model prepared in "[point_history_classification.ipynb](point_history_classification.ipynb)" is as follows.
-<img src="https://user-images.githubusercontent.com/37477845/102246771-7481ff00-3f42-11eb-8ddf-9e3cc30c5816.png" width="50%"><br>
-The model using "LSTM" is as follows. <br>Please change "use_lstm = False" to "True" when using (tf-nightly required (as of 2020/12/16))<br>
-<img src="https://user-images.githubusercontent.com/37477845/102246817-8368b180-3f42-11eb-9851-23a7b12467aa.png" width="60%">
-
-# Reference
-* [MediaPipe](https://mediapipe.dev/)
-
-# Author
-Kazuhito Takahashi(https://twitter.com/KzhtTkhs)
-
-# Translation and other improvements
-Nikita Kiselov(https://github.com/kinivi)
- 
-# License 
-hand-gesture-recognition-using-mediapipe is under [Apache v2 license](LICENSE).
+sudo apt update && sudo apt install -y \
+  libgl1-mesa-glx \
+  libglib2.0-0 \
+  libportaudio2
+🚀 Quick Start (Demo)To run the demo using your webcam, execute:Bashpython app.py
+Optional ArgumentsYou can customize the camera parameters and confidence thresholds using the following flags:ArgumentDescriptionDefault--deviceSpecifying the camera device number0--widthWidth at the time of camera capture960--heightHeight at the time of camera capture540--use_static_image_modeWhether to use static_image_mode option for MediaPipeUnspecified--min_detection_confidenceDetection confidence threshold0.5--min_tracking_confidenceTracking confidence threshold0.5Example:Bashpython app.py --device 0 --width 1280 --height 720
+📂 Directory StructurePlaintext.
+├── app.py
+├── keypoint_classification.ipynb
+├── point_history_classification.ipynb
+├── model/
+│   ├── keypoint_classifier/
+│   │   ├── keypoint.csv
+│   │   ├── keypoint_classifier.hdf5
+│   │   ├── keypoint_classifier.py
+│   │   ├── keypoint_classifier.tflite
+│   │   └── keypoint_classifier_label.csv
+│   └── point_history_classifier/
+│       ├── point_history.csv
+│       ├── point_history_classifier.hdf5
+│       ├── point_history_classifier.py
+│       ├── point_history_classifier.tflite
+│       └── point_history_classifier_label.csv
+└── utils/
+    └── cvfpscalc.py
+File Componentsapp.py: The main sample program for inference. It also handles custom training data collection (keypoints & fingertip history).keypoint_classification.ipynb: Model training script for static hand signs.point_history_classification.ipynb: Model training script for dynamic finger gestures.model/: Contains training datasets (.csv), labels, saved weights, and standalone lightweight inference scripts (.py/.tflite).utils/cvfpscalc.py: Utility module for real-time FPS measurement.🏋️ Training Custom ModelsYou can easily modify existing data, inject new classes, and retrain both models to fit your specific needs.🛑 1. Hand Sign Recognition TrainingA. Learning Data CollectionPress k to enter key point logging mode (displayed on screen as MODE:Logging Key Point).Press any number from 0 to 9 to log the coordinates directly into model/keypoint_classifier/keypoint.csv.Format: 1st column = Pressed number (Class ID); subsequent columns = Preprocessed coordinates.Coordinate Preprocessing Pipeline:Default pre-loaded classes: 0 (Open Hand), 1 (Closed Hand), 2 (Pointing).B. Model TrainingOpen keypoint_classification.ipynb in Jupyter Notebook and execute the cells sequentially.If changing the number of target classes, adjust NUM_CLASSES = <your_count> and edit the respective labels inside model/keypoint_classifier/keypoint_classifier_label.csv.Network Architecture Overview:☝️ 2. Finger Gesture Recognition TrainingA. Learning Data CollectionPress h to enter fingertip history logging mode (displayed as MODE:Logging Point History).Press any number from 0 to 9 to record sequential data into model/point_history_classifier/point_history.csv.Format: 1st column = Pressed number (Class ID); subsequent columns = Coordinate displacement history.Default pre-loaded classes: 0 (Stationary), 1 (Clockwise), 2 (Counter-clockwise), 4 (Moving).B. Model TrainingOpen point_history_classification.ipynb in Jupyter Notebook and execute all cells.Remember to update NUM_CLASSES and labels in model/point_history_classifier/point_history_classifier_label.csv if customizing classes.Network Topologies (Dense vs LSTM):⚠️ Note: To leverage the recurrent LSTM model structure, set use_lstm = True within the training script.🤝 References, Authors & CreditsMediaPipe FrameworkOriginal Project Architect: Kazuhito TakahashiTranslation & Refactoring Lead: Nikita Kiselov (kinivi)📄 LicenseThis repository is open-sourced under the Apache v2 License.
+### Các điểm thay đổi chính theo chuẩn GitHub:
+1. **Badges**: Thêm huy hiệu (badges) trực quan ở ngay đầu dự án để người xem biết ngay Repo dùng Python mấy, OS gì và License nào.
+2. **Loại bỏ lặp lại (Duplication Removal)**: Phần OS & Thư viện hệ thống của bạn bị lặp lại 2 lần (ở đầu và ở giữa), mình đã gộp sạch sẽ vào mục `Requirements & System Setup`.
+3. **Thanh phân tách và Emoji**: Thêm các icon trực quan sinh động như 📋, 🚀, 🏋️ giúp phân tách các module lớn, tăng trải nghiệm đọc.
+4. **Cấu trúc cây thư mục (Clean Tree)**: Chuyển cấu trúc thư mục từ dạng thẻ `<pre>
