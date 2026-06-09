@@ -51,6 +51,16 @@ Tracking confidence threshold (Default：0.5)
     └─cvfpscalc.py
 </pre>
 ### app.py
+1. Thông tin hệ điều hành & Python (OS & Python Version)
+Hệ điều hành tối ưu: Raspberry Pi OS (64-bit) Bookworm (Dòng OS Legacy trong Raspberry Pi Imager).
+Phiên bản Python: Python 3.11.15 (Hoặc phiên bản Python 3.11.2 có sẵn của hệ điều hành đều hoạt động ổn định).
+2. Các thư viện hệ thống cần cài trước (System Dependencies)
+Trước khi cài đặt các thư viện Python, bạn cần chạy lệnh này trên terminal của Raspberry Pi để cài đặt các driver bổ trợ cho OpenCV và thư viện âm thanh:
+code
+Bash
+sudo apt update
+sudo apt install -y libgl1-mesa-glx libglib2.0-0 libportaudio2
+
 This is a sample program for inference.<br>
 In addition, learning data (key points) for hand sign recognition,<br>
 You can also collect training data (index finger coordinate history) for finger gesture recognition.
